@@ -1,10 +1,13 @@
-import { montserratAlternatesTitleFonts } from "@/config/fonts";
+import { Title } from "@/components";
 
 export default function Home() {
   return (
-    <div className="">
-      <h1 className="">Hello Shop</h1>
-      <h1 className={montserratAlternatesTitleFonts.className}>World</h1>
-    </div>
+    <>
+      <Title
+        title="Welcome to Our Shop"
+        subtitle="Find the best products here"
+        className="mb-2"
+      />
+    </>
   );
 }
