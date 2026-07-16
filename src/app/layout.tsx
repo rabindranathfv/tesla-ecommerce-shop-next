@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { inter } from "@/config/fonts";
-import TopMenu from "@/components/ui/top-menu/TopMenu";
 
 export const metadata: Metadata = {
   title: "Teslo Ecommerce | Shop Next",
@@ -15,10 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <TopMenu />
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
