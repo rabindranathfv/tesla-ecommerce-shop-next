@@ -1,4 +1,9 @@
-import { QuantitySelector, SizeSelector } from "@/components";
+import {
+  ProductMobileSlideshow,
+  ProductSlideshow,
+  QuantitySelector,
+  SizeSelector,
+} from "@/components";
 import { titleFont } from "@/config/fonts";
 import { Product } from "@/interfaces";
 import { initialData } from "@/seed/seed";
@@ -25,18 +30,18 @@ export default async function ProductBySlugPage({ params }: props) {
       {/* Slideshow */}
       <div className="col-span-1 md:col-span-2 ">
         {/* Mobile Slideshow */}
-        {/* <ProductMobileSlideshow
+        <ProductMobileSlideshow
           title={product.title}
           images={product.images}
           className="block md:hidden"
-        /> */}
+        />
 
         {/* Desktop Slideshow */}
-        {/* <ProductSlideshow
+        <ProductSlideshow
           title={product.title}
           images={product.images}
           className="hidden md:block"
-        /> */}
+        />
       </div>
 
       <div className="col-span-1 px-5">
