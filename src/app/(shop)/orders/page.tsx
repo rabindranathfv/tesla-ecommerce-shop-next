@@ -49,11 +49,11 @@ export default function OrdersPage() {
               </td>
               <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 <IoCardOutline className="text-green-800" />
-                <span className="mx-2 text-green-800">Pagada</span>
+                <span className="mx-2 text-green-800">Paid</span>
               </td>
               <td className="text-sm text-gray-900 font-light px-6 ">
                 <Link href="/orders/123" className="hover:underline">
-                  Ver orden
+                  Review order
                 </Link>
               </td>
             </tr>
@@ -67,11 +67,11 @@ export default function OrdersPage() {
               </td>
               <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 <IoCardOutline className="text-red-800" />
-                <span className="mx-2 text-red-800">No Pagada</span>
+                <span className="mx-2 text-red-800">Not Paid</span>
               </td>
               <td className="text-sm text-gray-900 font-light px-6 ">
                 <Link href="/orders/123" className="hover:underline">
-                  Ver orden
+                  Review order
                 </Link>
               </td>
             </tr>
