@@ -2,27 +2,51 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
 
 ```bash
-# first step
 npm install
 ```
 
-Copy .env.template to a .env file with this content
+2. Copy .env.template to .env.
 
+3. Start PostgreSQL via Docker:
+
+```bash
+docker compose up -d
 ```
-DB_USER="username-db"
-DB_PASSWORD="some-pass"
-DB_NAME="name-db"
+
+4. Run Prisma migrations:
+
+```bash
+npm run prisma:migrate -- --name init
 ```
 
-start docker with `docker compose up`
+5. Generate Prisma Client:
 
-then start the project
+```bash
+npm run prisma:generate
+```
+
+6. Seed the database:
+
+```bash
+npm run db:seed
+```
+
+7. Start the app:
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:4000](http://localhost:4000) with your browser to see the result.
+
+## Prisma Commands
+
+```bash
+npm run prisma:generate
+npm run prisma:migrate -- --name <migration_name>
+npm run prisma:studio
+npm run db:seed
+```
