@@ -31,7 +31,7 @@ npm run prisma:generate
 6. Seed the database:
 
 ```bash
-npm run db:seed
+npm run seed
 ```
 
 7. Start the app:
