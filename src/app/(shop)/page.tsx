@@ -1,14 +1,26 @@
 import { Title } from "@/components";
-import { initialData } from "@/seed/seed";
-import { Product } from "@/interfaces/product.interface";
 import { getPaginatesProductsWithImages } from "@/actions";
 import ProductGrid from "@/components/products/product-grid/ProductGrid";
+import { redirect } from "next/navigation";
 
-const productsT1 = initialData.products as unknown as Product[];
+interface Props {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}
 
-export default async function Home() {
-  const { products } = await getPaginatesProductsWithImages();
-  console.log(`PRODUCTTEMP: ${products.length}`);
+export default async function Home({ searchParams }: Props) {
+  const resolvedSearchParams = await searchParams;
+  const page = resolvedSearchParams?.page
+    ? parseInt(resolvedSearchParams.page, 10)
+    : 1;
+
+  const { products } = await getPaginatesProductsWithImages({ page });
+
+  if (products.length === 0) {
+    redirect("/");
+  }
+
   return (
     <>
       <Title

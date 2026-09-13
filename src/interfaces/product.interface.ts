@@ -1,4 +1,5 @@
 export interface Product {
+  // for run npm run seed comment this id
   id: string;
   description: string;
   images: string[];
