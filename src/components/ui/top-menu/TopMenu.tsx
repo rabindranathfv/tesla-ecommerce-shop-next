@@ -20,19 +20,19 @@ export default function TopMenu() {
       {/* links by category */}
       <div className="hidden sm:block">
         <Link
-          href="/category/men"
+          href="/gender/men"
           className="mr-2 p-2 rouded-md transition-all hover:bg-gray-100"
         >
           Men
         </Link>
         <Link
-          href="/category/women"
+          href="/gender/women"
           className="mr-2 p-2 rouded-md transition-all hover:bg-gray-100"
         >
           Women
         </Link>
         <Link
-          href="/category/kid"
+          href="/gender/kid"
           className="mr-2 p-2 rouded-md transition-all hover:bg-gray-100"
         >
           Kid
