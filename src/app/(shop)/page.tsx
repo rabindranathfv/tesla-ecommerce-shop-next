@@ -1,11 +1,14 @@
 import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
 import { Product } from "@/interfaces/product.interface";
+import { getPaginatesProductsWithImages } from "@/actions";
 import ProductGrid from "@/components/products/product-grid/ProductGrid";
 
-const products = initialData.products as unknown as Product[];
+const productsT1 = initialData.products as unknown as Product[];
 
-export default function Home() {
+export default async function Home() {
+  const { products } = await getPaginatesProductsWithImages();
+  console.log(`PRODUCTTEMP: ${products.length}`);
   return (
     <>
       <Title

@@ -29,13 +29,14 @@ async function main() {
 
   // Products
 
+  // this can be re implement in parallel, to avoid sequential database operations and improve performance
   for (const product of products) {
     const { type, images, sizes, ...rest } = product;
 
     const dbProduct = await prisma.product.create({
       data: {
         ...rest,
-        size: sizes,
+        sizes: sizes,
         categoryId: categoriesMap[type],
       },
     });
