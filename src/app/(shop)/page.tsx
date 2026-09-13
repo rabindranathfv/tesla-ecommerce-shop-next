@@ -1,4 +1,4 @@
-import { Title } from "@/components";
+import { Pagination, Title } from "@/components";
 import { getPaginatesProductsWithImages } from "@/actions";
 import ProductGrid from "@/components/products/product-grid/ProductGrid";
 import { redirect } from "next/navigation";
@@ -11,15 +11,20 @@ interface Props {
 
 export default async function Home({ searchParams }: Props) {
   const resolvedSearchParams = await searchParams;
-  const page = resolvedSearchParams?.page
-    ? parseInt(resolvedSearchParams.page, 10)
-    : 1;
+  const pageParam = resolvedSearchParams?.page;
+  const page = pageParam ? parseInt(pageParam, 10) : 1;
+
+  if (isNaN(page) || page < 1) {
+    redirect("/");
+  }
 
   const { products, currentPage, totalPages } =
-    await getPaginatesProductsWithImages({ page });
+    await getPaginatesProductsWithImages({
+      page,
+    });
 
-  if (products.length === 0) {
-    redirect("/");
+  if (totalPages > 0 && currentPage > totalPages) {
+    redirect(`/?page=${totalPages}`);
   }
 
   return (
@@ -30,6 +35,8 @@ export default async function Home({ searchParams }: Props) {
         className="mb-2"
       />
       <ProductGrid products={products} />
+
+      <Pagination totalPages={totalPages} />
     </>
   );
 }
