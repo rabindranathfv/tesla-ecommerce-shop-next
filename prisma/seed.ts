@@ -1,7 +1,6 @@
-import { PrismaClient, Gender, Size } from "../src/generated/prisma";
+import { Gender, Size } from "../src/generated/prisma/client";
+import { prisma } from "../src/lib/prisma";
 import { initialData } from "../src/seed/seed";
-
-const prisma = new PrismaClient();
 
 async function main() {
   await prisma.productImage.deleteMany();
@@ -33,7 +32,7 @@ async function main() {
         description: item.description,
         inStock: item.inStock,
         price: item.price,
-        size: item.sizes as Size[],
+        sizes: item.sizes as Size[],
         slug: item.slug,
         tags: item.tags,
         gender: item.gender as Gender,
