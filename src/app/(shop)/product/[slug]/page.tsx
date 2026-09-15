@@ -1,5 +1,7 @@
 export const revalidate = 10080; // 7 days
 
+import { Metadata, ResolvingMetadata } from "next";
+
 import { getProductBySlug } from "@/actions";
 import {
   ProductMobileSlideshow,
@@ -12,8 +14,33 @@ import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
 
 interface props {
-  params: {
+  params: Promise<{
     slug: string;
+  }>;
+}
+
+export async function generateMetadata(
+  { params }: props,
+  _parent: ResolvingMetadata, // no need but give you access to the parent layout's metadata if needed
+): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      title: "Product not found",
+    };
+  }
+
+  return {
+    title: product.title,
+    description: product.description,
+    openGraph: {
+      title: product.title,
+      description: product.description,
+      // TODO: Add env var with base URL for images
+      images: [`/products/${product?.images[1]}`],
+    },
   };
 }
 

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export const getProductBySlug = async (slug: string) => {
   try {
-    const product = await prisma.product.findUnique({
+    const product = await prisma.product.findFirst({
       include: {
         productImages: {
           select: {
