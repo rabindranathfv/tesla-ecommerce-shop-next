@@ -13,6 +13,16 @@ export interface Product {
   gender: categories;
 }
 
+export interface CartProduct {
+  id: string;
+  price: number;
+  slug: string;
+  quantity: number;
+  size: Size;
+  title: string;
+  image: string;
+}
+
 export type categories = "men" | "women" | "kid" | "unisex";
 export type Size = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
 export type ValidTypes = "shirts" | "pants" | "hoodies" | "hats";
