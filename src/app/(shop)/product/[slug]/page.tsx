@@ -12,6 +12,7 @@ import {
 } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
+import AddToCart from "./ui/AddToCart";
 
 interface props {
   params: Promise<{
@@ -78,15 +79,7 @@ export default async function ProductBySlugPage({ params }: props) {
         <StockLabel slug={slug} />
         <p className="text-lg mb-5">${product.price}</p>
 
-        <SizeSelector
-          selectedSize={product.sizes[1]}
-          availableSizes={product.sizes}
-        />
-
-        <QuantitySelector quantity={2} />
-
-        {/* Button */}
-        <button className="btn-primary my-5">Add to cart</button>
+        <AddToCart product={product} />
 
         {/* Descripción */}
         <h3 className="font-bold text-sm">Description</h3>
