@@ -6,8 +6,6 @@ import { getProductBySlug } from "@/actions";
 import {
   ProductMobileSlideshow,
   ProductSlideshow,
-  QuantitySelector,
-  SizeSelector,
   StockLabel,
 } from "@/components";
 import { titleFont } from "@/config/fonts";
