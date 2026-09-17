@@ -7,8 +7,10 @@ import { useCartStore } from "@/store/ui/cart/cart-store";
 import { QuantitySelector } from "@/components";
 import { CartProduct } from "@/interfaces/product.interface";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const ProductInCart = () => {
+  const router = useRouter();
   const products: CartProduct[] = useCartStore((state) => state.cart);
   const updateProductInCart = useCartStore(
     (state) => state.updateProductInCart,
@@ -20,6 +22,12 @@ export const ProductInCart = () => {
     const loadingReady = () => setLoading(true);
     loadingReady();
   }, [products]);
+
+  useEffect(() => {
+    if (loading && products.length === 0) {
+      router.replace("/empty");
+    }
+  }, [loading, products.length, router]);
 
   if (!loading) {
     return <p>Loading...</p>;

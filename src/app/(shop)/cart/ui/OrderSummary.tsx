@@ -1,11 +1,13 @@
 "use client";
 
 import { useCartStore } from "@/store/ui/cart/cart-store";
+import { currencyFormat } from "@/utils";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
 
 export const OrderSummary = () => {
   const [loaded, setLoaded] = useState(false);
+  // useShallow is used to optimize re-renders by only selecting the necessary state from the store.
   const { totalItems, subtotalPrice, tax, totalPrice } = useCartStore(
     useShallow((state) => state.getSummaryInformation()),
   );
@@ -14,12 +16,6 @@ export const OrderSummary = () => {
     const loadingReady = () => setLoaded(true);
     loadingReady();
   }, []);
-
-  if (!loaded) return <p>Loading...</p>;
-
-  function currencyFormat(amount: number): string {
-    return `$${amount.toFixed(2)}`;
-  }
 
   if (!loaded) return <p>Loading...</p>;
 

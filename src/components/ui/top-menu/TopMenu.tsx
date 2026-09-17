@@ -56,13 +56,14 @@ export default function TopMenu() {
           <IoSearchOutline className="w-5 h-5" />
         </Link>
 
-        <Link href="/cart" className="mx-2">
+        <Link
+          href={totalItems > 0 && loading ? "/cart" : "/empty"}
+          className="mx-2"
+        >
           <div className="relative">
-            {loading && totalItems > 0 && (
-              <span className="absolute text-xs rounded-full px-1 font-bold -top-2 bg-blue-700 text-white -right-2">
-                {totalItems}
-              </span>
-            )}
+            <span className="absolute text-xs rounded-full px-1 font-bold -top-2 bg-blue-700 text-white -right-2">
+              {totalItems}
+            </span>
             {/* Removed because it's now conditionally rendered above */}
             <IoCartOutline className="w-5 h-5" />
           </div>
