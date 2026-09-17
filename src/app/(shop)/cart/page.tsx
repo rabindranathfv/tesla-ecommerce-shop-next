@@ -1,15 +1,8 @@
 import { Title } from "@/components/ui/title/Title";
-import { initialData } from "@/seed/seed";
 import Link from "next/link";
-import Image from "next/image";
-import { QuantitySelector } from "@/components";
+import { ProductInCart } from "./ui/ProductInCart";
 import { redirect } from "next/navigation";
-
-const productsInCart = [
-  initialData.products[0],
-  // initialData.products[1],
-  // initialData.products[2],
-];
+import { OrderSummary } from "./ui/OrderSummary";
 
 export default function CartPage() {
   // TODO: I will use this later
@@ -26,24 +19,7 @@ export default function CartPage() {
               Continue Shopping
             </Link>
 
-            {productsInCart.map((product) => (
-              <div key={product.slug} className="flex flex-col mt-5">
-                <Image
-                  src={`/products/${product.images[0]}`}
-                  alt={product.title}
-                  width={100}
-                  height={100}
-                  className="mr-5 rounded"
-                />
-
-                <div>
-                  <p>{product.title}</p>
-                  <p>${product.price}</p>
-                  <QuantitySelector quantity={3} />
-                  <button className="underline mt-3">Remove</button>
-                </div>
-              </div>
-            ))}
+            <ProductInCart />
           </div>
 
           {/* { checkout section } */}
@@ -53,33 +29,7 @@ export default function CartPage() {
               className="grid grid-cols-2
             "
             >
-              <span className="text-lg">No. Products</span>
-              <span className="text-right">{productsInCart.length} Items</span>
-
-              <span className="text-lg">Subtotal</span>
-              <span className="text-right">
-                $
-                {productsInCart.reduce(
-                  (total, product) => total + product.price,
-                  0,
-                )}
-              </span>
-
-              <span className="text-lg">Tax</span>
-              <span className="text-right">
-                $
-                {productsInCart
-                  .reduce((total, product) => total + product.price * 0.1, 0)
-                  .toFixed(2)}
-              </span>
-
-              <span className="text-lg">Total</span>
-              <span className="text-right">
-                $
-                {productsInCart
-                  .reduce((total, product) => total + product.price * 1.1, 0)
-                  .toFixed(2)}
-              </span>
+              <OrderSummary />
             </div>
 
             <div className="mt-5 mb-2 w-full">
