@@ -57,7 +57,8 @@ export const Sidebar = () => {
         </div>
 
         <Link
-          href="/"
+          href="/profile"
+          onClick={closeSideMenu}
           className="flex items-center mt-10 pt-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoPersonOutline size={30} />
