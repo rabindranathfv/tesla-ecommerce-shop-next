@@ -4,6 +4,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 interface State {
   cart: CartProduct[];
+  isHydrated: boolean;
 
   getSummaryInformation: () => {
     totalItems: number;
@@ -12,6 +13,7 @@ interface State {
     totalPrice: number;
   };
   addProductToCart: (product: CartProduct) => void;
+  setIsHydrated: (value: boolean) => void;
   getTotalItems: () => number;
   updateProductInCart: (product: CartProduct, quantity: number) => void;
   removeProduct: (product: CartProduct, size: string) => void;
@@ -22,6 +24,11 @@ export const useCartStore = create<State>()(
     persist(
       (set, get) => ({
         cart: [],
+        isHydrated: false,
+
+        setIsHydrated: (value: boolean) => {
+          set({ isHydrated: value }, undefined, "cart/setIsHydrated");
+        },
 
         addProductToCart: (product: CartProduct) => {
           set(
@@ -103,6 +110,9 @@ export const useCartStore = create<State>()(
       {
         name: "cart-storage",
         storage: createJSONStorage(() => localStorage),
+        onRehydrateStorage: () => (state) => {
+          state?.setIsHydrated(true);
+        },
       },
     ),
     {

@@ -4,18 +4,13 @@ import Link from "next/link";
 import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 import { useUIStore } from "@/store";
 import { useCartStore } from "@/store/ui/cart/cart-store";
-import { useEffect, useState } from "react";
 
 export default function TopMenu() {
   const totalItems = useCartStore((state) => state.getTotalItems());
+  const isHydrated = useCartStore((state) => state.isHydrated);
   const openSideMenu = useUIStore((state) => state.openSideMenu);
 
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const updateLoading = () => setLoading(true);
-    updateLoading();
-  }, []);
+  const safeTotalItems = isHydrated ? totalItems : 0;
 
   return (
     <nav className="flex px-5 justify-between items-center w-full">
@@ -56,13 +51,10 @@ export default function TopMenu() {
           <IoSearchOutline className="w-5 h-5" />
         </Link>
 
-        <Link
-          href={totalItems > 0 && loading ? "/cart" : "/empty"}
-          className="mx-2"
-        >
+        <Link href={safeTotalItems > 0 ? "/cart" : "/empty"} className="mx-2">
           <div className="relative">
             <span className="absolute text-xs rounded-full px-1 font-bold -top-2 bg-blue-700 text-white -right-2">
-              {totalItems}
+              {safeTotalItems}
             </span>
             {/* Removed because it's now conditionally rendered above */}
             <IoCartOutline className="w-5 h-5" />
