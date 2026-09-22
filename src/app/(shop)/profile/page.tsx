@@ -12,6 +12,7 @@ const ProfilePage = async () => {
   return (
     <div>
       <Title title="Profile" />
+      <h3>Role: {session.user.role}</h3>
     </div>
   );
 };
