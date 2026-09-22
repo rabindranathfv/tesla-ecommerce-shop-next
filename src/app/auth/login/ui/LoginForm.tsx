@@ -7,6 +7,7 @@ import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { IoInformationOutline } from "react-icons/io5";
+import { getSession } from "next-auth/react";
 
 export const LoginForm = () => {
   const [state, dispatch] = useActionState(authenticate, undefined);
@@ -15,7 +16,11 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (state === "Success") {
-      router.replace("/");
+      void (async () => {
+        await getSession();
+        router.replace("/");
+        router.refresh();
+      })();
     }
   }, [state, router]);
 
