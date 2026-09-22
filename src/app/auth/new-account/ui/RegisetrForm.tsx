@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { registerUser } from "@/actions";
+import { login, registerUser } from "@/actions";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type FormInputs = {
   name: string;
@@ -11,6 +13,8 @@ type FormInputs = {
 };
 
 const RegisetrForm = () => {
+  const router = useRouter();
+  const [serverError, setServerError] = useState<string>("");
   const {
     register,
     handleSubmit,
@@ -18,10 +22,22 @@ const RegisetrForm = () => {
   } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
-    // TODO: Wire to your create-user action.
+    setServerError(""); // Clear any previous server error before attempting to register a new user
     const { name, email, password } = data;
     const resp = await registerUser(name, email, password);
     if (!resp.ok) {
+      setServerError(
+        resp.message || "Error creating account, please try again.",
+      );
+    }
+
+    const loginResp = await login(email.toLocaleLowerCase(), password);
+    if (loginResp.ok) {
+      router.push("/"); // Redirect to the home page or any other page after successful login
+    } else {
+      setServerError(
+        loginResp.message || "Error logging in, please try again.",
+      );
     }
   };
 
@@ -84,6 +100,8 @@ const RegisetrForm = () => {
           {errors.password.message}
         </span>
       )}
+
+      <span className="text-red-500">{serverError} </span>
 
       <button type="submit" className="btn-primary">
         Create Account
