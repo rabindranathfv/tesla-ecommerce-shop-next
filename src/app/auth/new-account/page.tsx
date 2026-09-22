@@ -1,5 +1,5 @@
 import { titleFont } from "@/config/fonts";
-import Link from "next/link";
+import RegisetrForm from "./ui/RegisetrForm";
 
 export default function newAccountPage() {
   return (
@@ -8,41 +8,7 @@ export default function newAccountPage() {
         Create a New Account
       </h1>
 
-      <div className="flex flex-col">
-        <label htmlFor="full-name">Full name</label>
-        <input
-          className="px-5 py-2 border bg-gray-200 rounded mb-5"
-          type="text"
-          id="full-name"
-        />
-
-        <label htmlFor="email">Email</label>
-        <input
-          className="px-5 py-2 border bg-gray-200 rounded mb-5"
-          type="email"
-          id="email"
-        />
-
-        <label htmlFor="password">Password</label>
-        <input
-          className="px-5 py-2 border bg-gray-200 rounded mb-5"
-          type="password"
-          id="password"
-        />
-
-        <button className="btn-primary">Create Account</button>
-
-        {/* divisor line */}
-        <div className="flex items-center my-5">
-          <div className="flex-1 border-t border-gray-500"></div>
-          <div className="px-2 text-gray-800">Or</div>
-          <div className="flex-1 border-t border-gray-500"></div>
-        </div>
-
-        <Link href="/auth/login" className="btn-secondary text-center">
-          Sign In
-        </Link>
-      </div>
+      <RegisetrForm />
     </div>
   );
 }

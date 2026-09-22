@@ -1,0 +1,35 @@
+"use server";
+
+import { prisma } from "@/lib/prisma";
+import bycriptjs from "bcryptjs";
+
+export const registerUser = async (
+  name: string,
+  email: string,
+  password: string,
+) => {
+  try {
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email: email.toLowerCase(),
+        password: bycriptjs.hashSync(password, 10),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+    return {
+      ok: true,
+      user,
+    };
+  } catch (error) {
+    console.error("Error registering user:", error);
+    return {
+      ok: false,
+      message: "Error registering user, could not create the user",
+    };
+  }
+};

@@ -19,7 +19,6 @@ export const Sidebar = () => {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
   const closeSideMenu = useUIStore((state) => state.closeSideMenu);
   const { data: session } = useSession();
-  console.log(`SESSION: ${JSON.stringify(session)}`);
   const isAuthenticated = !!session?.user;
   const isAdmin = session?.user?.role === "admin";
 
