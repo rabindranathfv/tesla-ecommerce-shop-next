@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 
 import { Address } from "cluster";
+import { Country } from "@/interfaces";
 
 type FormInputs = {
   firstName: string;
@@ -25,7 +26,8 @@ interface Props {
   userStoredAddress?: Partial<Address>;
 }
 
-export const AddressForm = () => {
+export const AddressForm = ({ countries, userStoredAddress }: Props) => {
+  console.log(`COUNTRIES: ${JSON.stringify(countries)}`);
   const {
     register,
     handleSubmit,
@@ -102,7 +104,11 @@ export const AddressForm = () => {
           {...register("country", { required: true })}
         >
           <option value="">[ Select ]</option>
-          <option value="CRI">Costa Rica</option>
+          {countries.map((country) => (
+            <option key={country.id} value={country.id}>
+              {country.name}
+            </option>
+          ))}
         </select>
       </div>
 
