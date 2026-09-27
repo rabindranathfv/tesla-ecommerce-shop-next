@@ -6,8 +6,9 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 
-import { Address } from "cluster";
 import { Country } from "@/interfaces";
+import { useAddressStore } from "@/store";
+import { Address } from "cluster";
 
 type FormInputs = {
   firstName: string;
@@ -27,16 +28,29 @@ interface Props {
 }
 
 export const AddressForm = ({ countries, userStoredAddress }: Props) => {
-  console.log(`COUNTRIES: ${JSON.stringify(countries)}`);
   const {
     register,
     handleSubmit,
     formState: { isValid },
+    reset,
   } = useForm<FormInputs>();
+
+  const setAddress = useAddressStore((state) => state.setAddress);
+  const address = useAddressStore((state) => state.address);
 
   const onSubmit = (data: FormInputs) => {
     console.log(data);
+
+    setAddress(data);
   };
+
+  useEffect(() => {
+    if (address.firstName) {
+      reset(address);
+    }
+    // only to reload after re-enter in checkout address
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <form

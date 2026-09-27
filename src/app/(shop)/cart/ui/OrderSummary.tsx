@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore } from "@/store/ui/cart/cart-store";
+import { useCartStore } from "@/store/cart/cart-store";
 import { currencyFormat } from "@/utils";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";

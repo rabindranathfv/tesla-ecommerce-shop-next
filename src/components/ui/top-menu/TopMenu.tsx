@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 import { useUIStore } from "@/store";
-import { useCartStore } from "@/store/ui/cart/cart-store";
+import { useCartStore } from "@/store/cart/cart-store";
 
 export default function TopMenu() {
   const totalItems = useCartStore((state) => state.getTotalItems());

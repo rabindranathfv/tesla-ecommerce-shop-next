@@ -6,7 +6,7 @@ import type {
   Product,
   Size,
 } from "@/interfaces/product.interface";
-import { useCartStore } from "@/store/ui/cart/cart-store";
+import { useCartStore } from "@/store/cart/cart-store";
 import { useState } from "react";
 
 interface AddToCartProps {

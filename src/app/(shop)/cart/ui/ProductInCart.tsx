@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { useCartStore } from "@/store/ui/cart/cart-store";
+import { useCartStore } from "@/store/cart/cart-store";
 import { QuantitySelector } from "@/components";
 import { CartProduct } from "@/interfaces/product.interface";
 import { useEffect, useState } from "react";
