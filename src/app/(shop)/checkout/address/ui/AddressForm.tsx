@@ -6,9 +6,9 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 
-import { Country } from "@/interfaces";
+import { Country, Address } from "@/interfaces";
 import { useAddressStore } from "@/store";
-import { Address } from "cluster";
+import { setUserAddress } from "@/actions/address/set-user-address";
 
 type FormInputs = {
   firstName: string;
@@ -28,6 +28,9 @@ interface Props {
 }
 
 export const AddressForm = ({ countries, userStoredAddress }: Props) => {
+  const { data: session } = useSession({
+    required: true, // redirect into login if not authenticated
+  });
   const {
     register,
     handleSubmit,
@@ -42,6 +45,13 @@ export const AddressForm = ({ countries, userStoredAddress }: Props) => {
     console.log(data);
 
     setAddress(data);
+    const { rememberAddress, ...restAddressData } = data;
+    if (data.rememberAddress) {
+      // call server action
+      setUserAddress(restAddressData, session!.user?.id);
+    } else {
+      // todo: server action
+    }
   };
 
   useEffect(() => {
