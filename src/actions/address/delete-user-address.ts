@@ -9,7 +9,6 @@ export const deleteUserAddress = async (userId: string) => {
         userId: userId,
       },
     });
-    console.log(`DELETEDUSER: ${deletedUser}`);
 
     if (!deletedUser) {
       return {

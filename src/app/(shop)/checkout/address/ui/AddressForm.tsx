@@ -27,7 +27,7 @@ interface Props {
   userStoredAddress?: Partial<Address>;
 }
 
-export const AddressForm = ({ countries, userStoredAddress }: Props) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
   const { data: session } = useSession({
     required: true, // redirect into login if not authenticated
   });
@@ -36,7 +36,12 @@ export const AddressForm = ({ countries, userStoredAddress }: Props) => {
     handleSubmit,
     formState: { isValid },
     reset,
-  } = useForm<FormInputs>();
+  } = useForm<FormInputs>({
+    defaultValues: {
+      ...userStoredAddress,
+      rememberAddress: false,
+    },
+  });
 
   const setAddress = useAddressStore((state) => state.setAddress);
   const address = useAddressStore((state) => state.address);
