@@ -8,7 +8,7 @@ import clsx from "clsx";
 
 import { Country, Address } from "@/interfaces";
 import { useAddressStore } from "@/store";
-import { setUserAddress } from "@/actions/address/set-user-address";
+import { deleteUserAddress, setUserAddress } from "@/actions";
 
 type FormInputs = {
   firstName: string;
@@ -47,10 +47,10 @@ export const AddressForm = ({ countries, userStoredAddress }: Props) => {
     setAddress(data);
     const { rememberAddress, ...restAddressData } = data;
     if (data.rememberAddress) {
-      // call server action
       setUserAddress(restAddressData, session!.user?.id);
     } else {
       // todo: server action
+      deleteUserAddress(session!.user?.id);
     }
   };
 
