@@ -28,6 +28,7 @@ interface Props {
 }
 
 export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
+  const router = useRouter();
   const { data: session } = useSession({
     required: true, // redirect into login if not authenticated
   });
@@ -46,17 +47,16 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
   const setAddress = useAddressStore((state) => state.setAddress);
   const address = useAddressStore((state) => state.address);
 
-  const onSubmit = (data: FormInputs) => {
-    console.log(data);
-
+  const onSubmit = async (data: FormInputs) => {
     setAddress(data);
     const { rememberAddress, ...restAddressData } = data;
-    if (data.rememberAddress) {
-      setUserAddress(restAddressData, session!.user?.id);
+    if (rememberAddress) {
+      await setUserAddress(restAddressData, session!.user?.id);
     } else {
-      // todo: server action
-      deleteUserAddress(session!.user?.id);
+      await deleteUserAddress(session!.user?.id);
     }
+
+    router.push("/checkout");
   };
 
   useEffect(() => {
