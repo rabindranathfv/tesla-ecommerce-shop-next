@@ -3,6 +3,7 @@ import { initialData } from "@/seed/seed";
 import Image from "next/image";
 import clsx from "clsx";
 import { IoCardOutline } from "react-icons/io5";
+import { ClearCartAfterCheckout } from "./ui/ClearCartAfterCheckout";
 
 const productsInCart = [
   initialData.products[0],
@@ -18,12 +19,14 @@ interface Props {
 
 export default async function OrdersByIdPage({ params }: Props) {
   const { id } = await params;
+  console.log("Order ID ====>", id);
 
   // Todo: verify
   // redirect(/)
 
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
+      <ClearCartAfterCheckout />
       <div className="flex flex-col w-[1000px]">
         <Title title={`Order #${id}`} />
 

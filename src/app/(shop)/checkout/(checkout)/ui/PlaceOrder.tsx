@@ -5,13 +5,12 @@ import { useAddressStore } from "@/store/address/address-store";
 import { useCartStore } from "@/store/cart/cart-store";
 import { currencyFormat } from "@/utils";
 import clsx from "clsx";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useShallow } from "zustand/shallow";
 
 export const PlaceOrder = () => {
-  //   const router = useRouter();
-  const [loaded, setLoaded] = useState(false);
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
@@ -25,10 +24,6 @@ export const PlaceOrder = () => {
         ...state.getSummaryInformation(),
       })),
     );
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   const onPlaceOrder = async () => {
     setIsPlacingOrder(true);
@@ -55,8 +50,9 @@ export const PlaceOrder = () => {
       }
 
       // Handle successful order placement here
+      router.replace(`/orders/${resp.order?.id ?? ""}?fromCheckout=1`);
     } catch (error) {
-      // Handle error here
+      console.error("Error placing order:", error);
     } finally {
       setIsPlacingOrder(false);
     }
