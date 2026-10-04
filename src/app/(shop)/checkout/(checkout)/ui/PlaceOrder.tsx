@@ -1,5 +1,6 @@
 "use client";
 
+import { placeOrder } from "@/actions/order/place-order";
 import { useAddressStore } from "@/store/address/address-store";
 import { useCartStore } from "@/store/cart/cart-store";
 import { currencyFormat } from "@/utils";
@@ -44,6 +45,14 @@ export const PlaceOrder = () => {
         address,
         productsToOrder,
       );
+
+      const resp = await placeOrder(productsToOrder, address);
+      console.log(`RESP: ${JSON.stringify(resp)}`);
+      if (!resp.ok) {
+        setIsPlacingOrder(false);
+        setErrorMessage(resp.message ?? "Failed to place order");
+        return;
+      }
 
       // Handle successful order placement here
     } catch (error) {
@@ -112,7 +121,7 @@ export const PlaceOrder = () => {
           </span>
         </p>
 
-        {/* <p className="text-red-700"> error creating order </p> */}
+        {errorMessage && <p className="text-red-700">{errorMessage}</p>}
 
         <button
           className={clsx({
