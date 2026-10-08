@@ -1,10 +1,19 @@
 // https://tailwindcomponents.com/component/hoverable-table
 import { Title } from "@/components";
+import { getOrdersByUser } from "@/actions/order/get-orders-by-user";
+import { redirect } from "next/navigation";
 
 import Link from "next/link";
 import { IoCardOutline } from "react-icons/io5";
+import clsx from "clsx";
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const { ok, orders } = await getOrdersByUser();
+
+  if (!ok) {
+    redirect("/auth/login");
+  }
+
   return (
     <>
       <Title title="Orders" />
@@ -40,41 +49,53 @@ export default function OrdersPage() {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                1
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                Mark
-              </td>
-              <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                <IoCardOutline className="text-green-800" />
-                <span className="mx-2 text-green-800">Paid</span>
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 ">
-                <Link href="/orders/123" className="hover:underline">
-                  Review order
-                </Link>
-              </td>
-            </tr>
-
-            <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                1
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                Mark
-              </td>
-              <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                <IoCardOutline className="text-red-800" />
-                <span className="mx-2 text-red-800">Not Paid</span>
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 ">
-                <Link href="/orders/123" className="hover:underline">
-                  Review order
-                </Link>
-              </td>
-            </tr>
+            {orders?.length ? (
+              orders.map((order) => {
+                return (
+                  <tr
+                    key={order.id}
+                    className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {order.id.split("-")[0]}
+                    </td>
+                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      {order!.orderAddresses!.firstName}{" "}
+                      {order!.orderAddresses!.lastName}
+                    </td>
+                    <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <IoCardOutline
+                        className={clsx(
+                          order!.isPaid ? "text-green-800" : "text-red-800",
+                        )}
+                      />
+                      <span
+                        className={clsx(
+                          "mx-2",
+                          order!.isPaid ? "text-green-800" : "text-red-800",
+                        )}
+                      >
+                        {order!.isPaid ? "Paid" : "Not Paid"}
+                      </span>
+                    </td>
+                    <td className="text-sm text-gray-900 font-light px-6 ">
+                      <Link
+                        href={`/orders/${order.id}`}
+                        className="hover:underline"
+                      >
+                        Review order
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan={4} className="text-center py-4">
+                  No orders found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
