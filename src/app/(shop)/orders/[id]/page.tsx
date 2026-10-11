@@ -135,7 +135,7 @@ export default async function OrdersByIdPage({ params }: Props) {
                   {order!.isPaid ? "Paid" : "Pending payment"}
                 </span>
               </div> */}
-              <PayPalButton amount={order!.total} />
+              <PayPalButton amount={order!.total} orderId={order!.id} />
             </div>
           </div>
         </div>
