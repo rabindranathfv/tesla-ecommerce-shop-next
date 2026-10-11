@@ -120,7 +120,7 @@ export const PlaceOrder = () => {
         {errorMessage && <p className="text-red-700">{errorMessage}</p>}
 
         <button
-          className={clsx({
+          className={clsx("w-full", {
             "btn-primary": !isPlacingOrder,
             "btn-disabled": isPlacingOrder,
           })}

@@ -29,6 +29,7 @@ const RegisetrForm = () => {
       setServerError(
         resp.message || "Error creating account, please try again.",
       );
+      return;
     }
 
     const loginResp = await login(email.toLocaleLowerCase(), password);

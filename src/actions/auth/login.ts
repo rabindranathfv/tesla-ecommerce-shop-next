@@ -31,14 +31,33 @@ export async function authenticate(
 
 export const login = async (email: string, password: string) => {
   try {
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       email,
       password,
+      redirect: false,
     });
+
+    if (result?.error) {
+      return {
+        ok: false,
+        message: "Invalid credentials.",
+      };
+    }
+
     return {
       ok: true,
     };
   } catch (error) {
+    if (error instanceof AuthError) {
+      return {
+        ok: false,
+        message:
+          error.type === "CredentialsSignin"
+            ? "Invalid credentials."
+            : "Error logging in, please try again.",
+      };
+    }
+
     console.error("Error logging in:", error);
     return {
       ok: false,
