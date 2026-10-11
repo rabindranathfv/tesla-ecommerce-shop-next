@@ -19,3 +19,6 @@ export * from "./order/get-orders";
 
 export * from "./payments/set-transaction-id";
 export * from "./payments/paypay-check-payment";
+
+export * from "./users/getUsers";
+export * from "./users/changeUserRole";
