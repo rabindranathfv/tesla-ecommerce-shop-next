@@ -23,3 +23,5 @@ export * from "./payments/paypay-check-payment";
 
 export * from "./users/getUsers";
 export * from "./users/changeUserRole";
+
+export * from "./categories/get-categories";
