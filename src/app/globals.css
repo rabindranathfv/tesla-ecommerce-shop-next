@@ -6,7 +6,7 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
-/* 
+/*
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -63,4 +63,8 @@ body {
 
 .btn-disabled {
   @apply bg-gray-600 text-white py-2 px-4 rounded transition-all;
+}
+
+.btn-danger {
+  @apply bg-red-600 hover:bg-red-800 text-white py-2 px-4 transition-all;
 }

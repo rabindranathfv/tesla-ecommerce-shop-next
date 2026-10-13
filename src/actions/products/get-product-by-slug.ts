@@ -9,6 +9,7 @@ export const getProductBySlug = async (slug: string) => {
         productImages: {
           select: {
             url: true,
+            id: true,
           },
         },
       },
