@@ -1,13 +1,13 @@
 "use client";
 
 import { Category, Product, ProductImage } from "@/interfaces";
+import { createUpdateProduct } from "@/actions";
 import { useForm } from "react-hook-form";
-import Image from "next/image";
 import { ProductImage as ProductImageComponent } from "@/components";
 import clsx from "clsx";
 
 interface Props {
-  product: Product & { productImages?: ProductImage[] };
+  product: Partial<Product> & { productImages?: ProductImage[] };
   categories: Category[];
 }
 
@@ -40,12 +40,31 @@ export const ProductForm = ({ product, categories }: Props) => {
     defaultValues: {
       ...product,
       sizes: product.sizes ?? [],
-      tags: product.tags.join(", "),
+      tags: product.tags?.join(", ") ?? "",
     },
   });
 
-  const onSubmit = (data: FormInputs) => {
+  const onSubmit = async (data: FormInputs) => {
     console.log(data);
+
+    const formData = new FormData();
+
+    const { ...productToSave } = data;
+
+    if (product.id) {
+      formData.append("id", product.id?.toString() ?? "");
+    }
+    formData.append("title", productToSave.title);
+    formData.append("slug", productToSave.slug);
+    formData.append("description", productToSave.description);
+    formData.append("price", productToSave.price.toString());
+    formData.append("inStock", productToSave.inStock.toString());
+    formData.append("sizes", productToSave.sizes.toString());
+    formData.append("tags", productToSave.tags);
+    formData.append("gender", productToSave.gender);
+    formData.append("categoryId", productToSave.categoryId);
+
+    const { ok } = await createUpdateProduct(formData);
   };
 
   const deleteProductImage = (imageId: number, imageUrl: string) => {
@@ -150,6 +169,15 @@ export const ProductForm = ({ product, categories }: Props) => {
 
       {/* Sizes and images selector */}
       <div className="w-full">
+        <div className="flex flex-col mb-2">
+          <span>Stock</span>
+          <input
+            type="number"
+            className="p-2 border rounded-md bg-gray-200"
+            {...register("inStock", { required: true, min: 0 })}
+          />
+        </div>
+
         {/* As checkboxes */}
         <div className="flex flex-col">
           <span>Sizes</span>
