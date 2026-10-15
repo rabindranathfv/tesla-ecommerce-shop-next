@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { ProductImage } from "@/components/products/product-image/ProductImage";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperObject } from "swiper";
@@ -43,13 +43,12 @@ export const ProductSlideshow = ({ title, images, className }: props) => {
       >
         {images.map((image) => (
           <SwiperSlide key={image}>
-            <Image
+            <ProductImage
               width={1024}
               height={800}
-              src={`/products/${image}`}
+              src={image ? image : "/imgs/placeholder.jpg"}
               alt={title}
               className="rounded-lg object-fill"
-              loading="eager"
             />
           </SwiperSlide>
         ))}
@@ -65,13 +64,12 @@ export const ProductSlideshow = ({ title, images, className }: props) => {
       >
         {images.map((image) => (
           <SwiperSlide key={image}>
-            <Image
+            <ProductImage
               width={300}
               height={300}
-              src={`/products/${image}`}
+              src={image ? image : "/imgs/placeholder.jpg"}
               alt={title}
               className="rounded-lg object-fill"
-              loading="eager"
             />
           </SwiperSlide>
         ))}

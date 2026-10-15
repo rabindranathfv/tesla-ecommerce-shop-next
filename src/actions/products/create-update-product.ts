@@ -77,15 +77,17 @@ export const createUpdateProduct = async (formData: FormData) => {
 
       // TODO: revalidatePath
       revalidatePath("/admin/products");
+      revalidatePath(`/admin/product/${product.slug}`);
+      revalidatePath(`/products/${product.slug}`);
 
       return {
         product,
       };
     });
 
-    return { ok: true };
+    return { ok: true, product: prismaTx.product };
   } catch (error) {
     console.error("Error creating/updating product:", error);
-    throw error;
+    return { ok: false, message: `Error creating/updating product: ${error}` };
   }
 };

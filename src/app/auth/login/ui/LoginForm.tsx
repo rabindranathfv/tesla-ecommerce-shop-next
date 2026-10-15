@@ -12,7 +12,6 @@ import { getSession } from "next-auth/react";
 export const LoginForm = () => {
   const [state, dispatch] = useActionState(authenticate, undefined);
   const router = useRouter();
-  console.log(`STATE: ${state}`);
 
   useEffect(() => {
     if (state === "Success") {

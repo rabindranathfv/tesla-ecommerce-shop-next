@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ProductImage } from "@/components/products/product-image/ProductImage";
 import Link from "next/link";
 
 import { useCartStore } from "@/store/cart/cart-store";
@@ -40,8 +40,8 @@ export const ProductInCart = () => {
           key={`${product.slug}-${product.size}`}
           className="flex flex-col mt-5"
         >
-          <Image
-            src={`/products/${product.image}`}
+          <ProductImage
+            src={product.image}
             alt={product.title}
             width={100}
             height={100}

@@ -42,7 +42,6 @@ export const PlaceOrder = () => {
       );
 
       const resp = await placeOrder(productsToOrder, address);
-      console.log(`RESP: ${JSON.stringify(resp)}`);
       if (!resp.ok) {
         setIsPlacingOrder(false);
         setErrorMessage(resp.message ?? "Failed to place order");
