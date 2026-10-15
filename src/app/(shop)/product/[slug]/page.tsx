@@ -51,6 +51,9 @@ export default async function ProductBySlugPage({ params }: props) {
     return notFound();
   }
 
+  const productImages =
+    product.images.length > 0 ? product.images : ["/imgs/placeholder.jpg"];
+
   return (
     <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
       {/* Slideshow */}
@@ -58,14 +61,14 @@ export default async function ProductBySlugPage({ params }: props) {
         {/* Mobile Slideshow */}
         <ProductMobileSlideshow
           title={product.title}
-          images={product.images}
+          images={productImages}
           className="block md:hidden"
         />
 
         {/* Desktop Slideshow */}
         <ProductSlideshow
           title={product.title}
-          images={product.images}
+          images={productImages}
           className="hidden md:block"
         />
       </div>
