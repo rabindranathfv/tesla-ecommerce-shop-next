@@ -14,6 +14,7 @@ interface State {
   };
   addProductToCart: (product: CartProduct) => void;
   setIsHydrated: (value: boolean) => void;
+  updateProductImage: (productId: string, image?: string) => void;
   getTotalItems: () => number;
   updateProductInCart: (product: CartProduct, quantity: number) => void;
   removeProduct: (product: CartProduct, size: string) => void;
@@ -32,6 +33,23 @@ export const useCartStore = create<State>()(
           set({ isHydrated: value }, undefined, "cart/setIsHydrated");
         },
 
+        updateProductImage: (productId: string, image?: string) => {
+          set(
+            (state) => {
+              let hasChanged = false;
+              const cart = state.cart.map((item) => {
+                if (item.id !== productId || item.image === image) return item;
+                hasChanged = true;
+                return { ...item, image };
+              });
+
+              return hasChanged ? { cart } : state;
+            },
+            undefined,
+            "cart/updateProductImage",
+          );
+        },
+
         addProductToCart: (product: CartProduct) => {
           set(
             (state) => {
@@ -48,6 +66,7 @@ export const useCartStore = create<State>()(
                   return {
                     ...item,
                     quantity: item.quantity + product.quantity,
+                    image: product.image || item.image,
                   };
                 }
                 return item;

@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
-
 import { useCartStore } from "@/store/cart/cart-store";
 import { CartProduct } from "@/interfaces/product.interface";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { currencyFormat } from "@/utils";
+import { ProductImage } from "@/components/products/product-image/ProductImage";
 
 export const CheckoutProductInCart = () => {
   const router = useRouter();
@@ -36,8 +35,8 @@ export const CheckoutProductInCart = () => {
           key={`${product.slug}-${product.size}`}
           className="flex flex-col mt-5"
         >
-          <Image
-            src={`/products/${product.image}`}
+          <ProductImage
+            src={product.image}
             alt={product.title}
             width={100}
             height={100}
