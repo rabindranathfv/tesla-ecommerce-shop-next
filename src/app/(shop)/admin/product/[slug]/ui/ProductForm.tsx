@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { ProductImage as ProductImageComponent } from "@/components";
 import clsx from "clsx";
+import { useState } from "react";
+import { IoCloudUploadOutline, IoImagesOutline } from "react-icons/io5";
 
 interface Props {
   product: Partial<Product> & { productImages?: ProductImage[] };
@@ -34,8 +36,9 @@ export const ProductForm = ({ product, categories }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isSubmitting },
     getValues,
+    resetField,
     setValue,
     watch,
   } = useForm<FormInputs>({
@@ -47,10 +50,11 @@ export const ProductForm = ({ product, categories }: Props) => {
       images: undefined,
     },
   });
+  const [deletingImageId, setDeletingImageId] = useState<number | null>(null);
+  const [deletedImageIds, setDeletedImageIds] = useState<number[]>([]);
+  const [deleteError, setDeleteError] = useState("");
 
   const onSubmit = async (data: FormInputs) => {
-    console.log(data);
-
     const formData = new FormData();
 
     const { images, ...productToSave } = data;
@@ -81,8 +85,32 @@ export const ProductForm = ({ product, categories }: Props) => {
       alert("Failed to save product");
       return;
     }
+    resetField("images");
     router.replace(`/admin/product/${savedProduct?.slug}`);
   };
+
+  const onDeleteProductImage = async (imageId: number, imageUrl: string) => {
+    setDeletingImageId(imageId);
+    setDeleteError("");
+
+    try {
+      const result = await deleteProductImage(imageId, imageUrl);
+      if (!result.ok) {
+        setDeleteError(result.message);
+        return;
+      }
+
+      setDeletedImageIds((current) => [...current, imageId]);
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete product image:", error);
+      setDeleteError("Failed to delete image. Please try again.");
+    } finally {
+      setDeletingImageId(null);
+    }
+  };
+
+  const selectedImageCount = watch("images")?.length ?? 0;
 
   watch("sizes"); // to re-render the component when sizes change
 
@@ -177,7 +205,15 @@ export const ProductForm = ({ product, categories }: Props) => {
           </select>
         </div>
 
-        <button className="btn-primary w-full">Save</button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={clsx("btn-primary w-full", {
+            "cursor-not-allowed opacity-60": isSubmitting,
+          })}
+        >
+          {isSubmitting ? "Saving product..." : "Save"}
+        </button>
       </div>
 
       {/* Sizes and images selector */}
@@ -222,11 +258,40 @@ export const ProductForm = ({ product, categories }: Props) => {
               accept="image/png, image/jpeg, image/avif"
               {...register("images")}
             />
+            {selectedImageCount > 0 && (
+              <p
+                className="mt-2 flex items-center gap-2 text-sm text-gray-600"
+                role="status"
+              >
+                {isSubmitting ? (
+                  <>
+                    <IoCloudUploadOutline className="h-5 w-5 shrink-0 animate-pulse" />
+                    Uploading {selectedImageCount}{" "}
+                    {selectedImageCount === 1 ? "image" : "images"}...
+                  </>
+                ) : (
+                  <>
+                    <IoImagesOutline className="h-5 w-5 shrink-0" />
+                    {selectedImageCount}{" "}
+                    {selectedImageCount === 1 ? "image" : "images"} selected
+                    for upload
+                  </>
+                )}
+              </p>
+            )}
           </div>
 
+          {deleteError && (
+            <p className="text-sm text-red-700" role="alert">
+              {deleteError}
+            </p>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {product.productImages?.map((image) => (
-              <div key={image.id}>
+            {product.productImages
+              ?.filter((image) => !deletedImageIds.includes(image.id))
+              .map((image) => (
+                <div key={image.id}>
                 <ProductImageComponent
                   alt={product.title ?? ""}
                   src={image.url}
@@ -237,13 +302,17 @@ export const ProductForm = ({ product, categories }: Props) => {
 
                 <button
                   type="button"
-                  onClick={() => deleteProductImage(image.id, image.url)}
-                  className="btn-danger w-full rounded-b-xl"
+                  onClick={() => onDeleteProductImage(image.id, image.url)}
+                  disabled={deletingImageId !== null}
+                  aria-busy={deletingImageId === image.id}
+                  className={clsx("btn-danger w-full rounded-b-xl", {
+                    "cursor-not-allowed opacity-60": deletingImageId !== null,
+                  })}
                 >
-                  Remove
+                  {deletingImageId === image.id ? "Deleting..." : "Remove"}
                 </button>
               </div>
-            ))}
+              ))}
           </div>
           <p className="text-sm text-gray-500">
             You can upload multiple images for the product.
