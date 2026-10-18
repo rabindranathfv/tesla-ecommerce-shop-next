@@ -1,7 +1,7 @@
 "use client";
 
 import { Category, Product, ProductImage } from "@/interfaces";
-import { createUpdateProduct } from "@/actions";
+import { createUpdateProduct, deleteProductImage } from "@/actions";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { ProductImage as ProductImageComponent } from "@/components";
@@ -82,10 +82,6 @@ export const ProductForm = ({ product, categories }: Props) => {
       return;
     }
     router.replace(`/admin/product/${savedProduct?.slug}`);
-  };
-
-  const deleteProductImage = (imageId: number, imageUrl: string) => {
-    console.log("Deleting image:", imageId, imageUrl);
   };
 
   watch("sizes"); // to re-render the component when sizes change

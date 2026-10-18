@@ -51,7 +51,7 @@ export const ProductInCart = () => {
           <div>
             <Link
               className="hover:underline cursor-pointer"
-              href={`/products/${product.slug}`}
+              href={`/product/${product.slug}`}
             >
               ({product.size}) - {product.title}
             </Link>
