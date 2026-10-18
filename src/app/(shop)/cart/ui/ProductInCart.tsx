@@ -14,7 +14,6 @@ export const ProductInCart = () => {
   const router = useRouter();
   const pathname = usePathname();
   const products: CartProduct[] = useCartStore((state) => state.cart);
-  console.log(`PRODUCTS: ${JSON.stringify(products)}`);
   const updateProductInCart = useCartStore(
     (state) => state.updateProductInCart,
   );
@@ -22,13 +21,11 @@ export const ProductInCart = () => {
   const updateProductImage = useCartStore((state) => state.updateProductImage);
   const [loading, setLoading] = useState<boolean>(false);
   const [failedImageIds, setFailedImageIds] = useState<string[]>([]);
-  const productIdsKey = [...new Set(products.map((product) => product.id))].join(
-    ",",
-  );
+  const productIdsKey = [
+    ...new Set(products.map((product) => product.id)),
+  ].join(",");
   const productIds = productIdsKey ? productIdsKey.split(",") : [];
-  const imageLoadError = failedImageIds.some((id) =>
-    productIds.includes(id),
-  );
+  const imageLoadError = failedImageIds.some((id) => productIds.includes(id));
 
   useEffect(() => {
     const productIds = productIdsKey ? productIdsKey.split(",") : [];

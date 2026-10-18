@@ -7,6 +7,8 @@ import { IoCardOutline } from "react-icons/io5";
 import clsx from "clsx";
 import { getOrders } from "@/actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrdersPage() {
   const { ok, orders } = await getOrders();
 
