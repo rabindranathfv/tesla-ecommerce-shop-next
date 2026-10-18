@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 4000",
-    "build": "next build",
+    "build": "npm run prisma:deploy && next build",
     "start": "next start --port 4000",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "npm run prisma:generate && prisma migrate dev --name",
     "prisma:studio": "prisma studio",
-    "seed": "prisma generate && tsx src/seed/seed-database.ts"
+    "seed": "prisma generate && tsx src/seed/seed-database.ts",
+    "prisma:deploy": "npx prisma migrate deploy && prisma generate"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^10.6.0",
