@@ -78,17 +78,20 @@ export const createUpdateProduct = async (formData: FormData) => {
         console.log({ createProduct: product });
       }
 
-      if (formData.getAll("images")) {
-        // url array [ http:1, http:2, etc]
-        const images = await uploadImages(formData.getAll("images") as File[]);
-        console.log(`IMAGES: ${images}`);
-        if (!images) {
-          throw new Error("Failed to upload images");
+      const imageFiles = formData.getAll("images") as File[];
+      if (imageFiles.length > 0) {
+        const uploadedImages = await uploadImages(imageFiles);
+        if (!uploadedImages || uploadedImages.some((image) => image === null)) {
+          throw new Error("Failed to upload one or more product images");
         }
 
-        await prisma.productImage.createMany({
-          data: images.map((image) => ({
-            url: image!,
+        const imageUrls = uploadedImages.filter(
+          (image): image is string => image !== null,
+        );
+
+        await tx.productImage.createMany({
+          data: imageUrls.map((url) => ({
+            url,
             productId: product.id,
           })),
         });
