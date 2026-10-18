@@ -46,12 +46,13 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
 
   const setAddress = useAddressStore((state) => state.setAddress);
   const address = useAddressStore((state) => state.address);
+  const isCheckoutDraft = useAddressStore((state) => state.isCheckoutDraft);
 
   const onSubmit = async (data: FormInputs) => {
     const { rememberAddress, ...restAddressData } = data;
     setAddress(restAddressData);
     if (rememberAddress) {
-      await setUserAddress(restAddressData, session!.user?.id);
+      await setUserAddress(restAddressData);
     } else {
       await deleteUserAddress(session!.user?.id);
     }
@@ -60,7 +61,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
   };
 
   useEffect(() => {
-    if (address.firstName) {
+    if (isCheckoutDraft && address.firstName) {
       reset(address);
     }
     // only to reload after re-enter in checkout address

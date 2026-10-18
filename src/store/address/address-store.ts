@@ -14,13 +14,15 @@ interface State {
     // rememberAddress: boolean;
   };
 
+  isCheckoutDraft: boolean;
   setAddress: (address: State["address"]) => void;
+  setSavedAddress: (address: State["address"]) => void;
 }
 
 export const useAddressStore = create<State>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         address: {
           firstName: "",
           lastName: "",
@@ -31,8 +33,12 @@ export const useAddressStore = create<State>()(
           country: "",
           phone: "",
         },
+        isCheckoutDraft: false,
         setAddress: (address: State["address"]) => {
-          set({ address });
+          set({ address, isCheckoutDraft: true });
+        },
+        setSavedAddress: (address: State["address"]) => {
+          set({ address, isCheckoutDraft: false });
         },
       }),
       {

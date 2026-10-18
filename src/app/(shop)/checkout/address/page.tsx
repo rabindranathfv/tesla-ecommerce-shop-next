@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import { AddressForm } from "./ui/AddressForm";
 import { Title } from "@/components";
 import { getCountries } from "@/actions/country/get-countries";

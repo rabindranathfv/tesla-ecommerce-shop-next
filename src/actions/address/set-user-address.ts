@@ -1,11 +1,23 @@
 "use server";
 
+import { auth } from "@/auth.config";
 import { Address } from "@/interfaces";
 import { prisma } from "@/lib/prisma";
 
-export const setUserAddress = async (address: Address, userId: string) => {
+export const setUserAddress = async (address: Address) => {
   try {
-    const addressRecord = await createOrReplaceAddress(address, userId);
+    const session = await auth();
+    if (!session?.user) {
+      return {
+        ok: false,
+        error: "You must be signed in to update your address.",
+      };
+    }
+
+    const addressRecord = await createOrReplaceAddress(
+      address,
+      session.user.id,
+    );
 
     return {
       ok: true,
@@ -24,12 +36,12 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
   try {
     const storedAddress = await prisma.userAddress.findUnique({
       where: {
-        userId: userId,
+        userId,
       },
     });
 
     const newAddress = {
-      userId: userId,
+      userId,
       address: address.address,
       address2: address.address2,
       countryId: address.country,
@@ -46,14 +58,12 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
       });
     }
 
-    const updatedAddress = await prisma.userAddress.update({
+    return await prisma.userAddress.update({
       where: {
-        userId: userId,
+        userId,
       },
       data: newAddress,
     });
-
-    return updatedAddress;
   } catch (error) {
     console.error("Failed to create or replace user address:", error);
     return {
